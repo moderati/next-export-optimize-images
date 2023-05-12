@@ -32,7 +32,7 @@
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "lint": "eslint {src,__tests__} --cache",
     "lint-staged": "lint-staged",
-    "prepare": "husky install",
+    "prepare": "husky install && npm run build",
     "pretest": "rimraf {__tests__/e2e/.next,__tests__/e2e/out} && swc src -d dist && cross-env TEST_JSON_PATH=__tests__/e2e/.next/custom-optimized-images.nd.json next build __tests__/e2e && next export __tests__/e2e && node __tests__/e2e/cli.js",
     "test": "jest",
     "test:watch": "jest --watch",
