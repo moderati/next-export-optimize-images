@@ -28,7 +28,7 @@ const externalImagesDownloader = async ({ terse = false, manifest, destDir }: Ex
     promises.push(
       (async () => {
         // TODO: fix hacky solution, just getting this in to get a build to stop giving 429 errors
-        setTimeout(() => {
+        setTimeout(async () => {
           downloadedImages.push(externalUrl)
 
           const outputPath = path.join(destDir, src)
@@ -51,8 +51,8 @@ const externalImagesDownloader = async ({ terse = false, manifest, destDir }: Ex
             } catch (e) {
               reject(e)
             }
-          }, Math.random() * 12000)
-        })
+          })
+        }, Math.random() * 12000)
       })()
     )
   }
