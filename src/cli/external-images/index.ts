@@ -27,28 +27,31 @@ const externalImagesDownloader = async ({ terse = false, manifest, destDir }: Ex
 
     promises.push(
       (async () => {
-        downloadedImages.push(externalUrl)
+        // TODO: fix hacky solution, just getting this in to get a build to stop giving 429 errors
+        setTimeout(() => {
+          downloadedImages.push(externalUrl)
 
-        const outputPath = path.join(destDir, src)
-        await fs.ensureFile(outputPath)
+          const outputPath = path.join(destDir, src)
+          await fs.ensureFile(outputPath)
 
-        await new Promise((resolve, reject) => {
-          try {
-            const readStream = got.stream(externalUrl)
-            const writeStream = fs.createWriteStream(outputPath)
+          await new Promise((resolve, reject) => {
+            try {
+              const readStream = got.stream(externalUrl)
+              const writeStream = fs.createWriteStream(outputPath)
 
-            readStream.pipe(writeStream)
+              readStream.pipe(writeStream)
 
-            writeStream.on('finish', () => {
-              if (!terse) {
-                // eslint-disable-next-line no-console
-                console.log(`\`${externalUrl}\` has been downloaded.`)
-              }
-              resolve(undefined)
-            })
-          } catch (e) {
-            reject(e)
-          }
+              writeStream.on('finish', () => {
+                if (!terse) {
+                  // eslint-disable-next-line no-console
+                  console.log(`\`${externalUrl}\` has been downloaded.`)
+                }
+                resolve(undefined)
+              })
+            } catch (e) {
+              reject(e)
+            }
+          }, Math.random * 12000)
         })
       })()
     )
