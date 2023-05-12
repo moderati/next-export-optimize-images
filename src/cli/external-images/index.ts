@@ -27,14 +27,14 @@ const externalImagesDownloader = async ({ terse = false, manifest, destDir }: Ex
 
     promises.push(
       (async () => {
-        // TODO: fix hacky solution, just getting this in to get a build to stop giving 429 errors
-        setTimeout(async () => {
-          downloadedImages.push(externalUrl)
+        downloadedImages.push(externalUrl)
 
-          const outputPath = path.join(destDir, src)
-          await fs.ensureFile(outputPath)
+        const outputPath = path.join(destDir, src)
+        await fs.ensureFile(outputPath)
 
-          await new Promise((resolve, reject) => {
+        await new Promise((resolve, reject) => {
+          // TODO: fix hacky solution, just getting this in to get a build to stop giving 429 errors
+          setTimeout(async () => {
             try {
               const readStream = got.stream(externalUrl)
               const writeStream = fs.createWriteStream(outputPath)
@@ -51,8 +51,8 @@ const externalImagesDownloader = async ({ terse = false, manifest, destDir }: Ex
             } catch (e) {
               reject(e)
             }
-          })
-        }, Math.random() * 12000)
+          }, Math.random() * 12000)
+        })
       })()
     )
   }
