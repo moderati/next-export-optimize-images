@@ -51,7 +51,7 @@ const externalImagesDownloader = async ({ terse = false, manifest, destDir }: Ex
             } catch (e) {
               reject(e)
             }
-          }, Math.random * 12000)
+          }, Math.random() * 12000)
         })
       })()
     )
